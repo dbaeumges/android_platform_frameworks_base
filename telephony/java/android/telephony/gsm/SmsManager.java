@@ -20,6 +20,10 @@ import android.app.PendingIntent;
 
 import java.util.ArrayList;
 
+// begin WITH_TAINT_TRACKING
+import dalvik.system.Taint;
+// end WITH_TAINT_TRACKING
+
 
 /**
  * Manages SMS operations such as sending data, text, and pdu SMS messages.
@@ -76,6 +80,9 @@ import java.util.ArrayList;
     public final void sendTextMessage(
             String destinationAddress, String scAddress, String text,
             PendingIntent sentIntent, PendingIntent deliveryIntent) {
+// begin WITH_TAINT_TRACKING
+        Taint.logSmsAction("sendSms", destinationAddress, scAddress, text);
+// end WITH_TAINT_TRACKING
         mSmsMgrProxy.sendTextMessage(destinationAddress, scAddress, text,
                 sentIntent, deliveryIntent);
     }
@@ -128,6 +135,9 @@ import java.util.ArrayList;
     public final void sendMultipartTextMessage(
             String destinationAddress, String scAddress, ArrayList<String> parts,
             ArrayList<PendingIntent> sentIntents, ArrayList<PendingIntent> deliveryIntents) {
+// begin WITH_TAINT_TRACKING
+        Taint.logSendMultipartSms(destinationAddress, scAddress, parts);
+// end WITH_TAINT_TRACKING
         mSmsMgrProxy.sendMultipartTextMessage(destinationAddress, scAddress, parts,
                 sentIntents, deliveryIntents);
     }
@@ -161,6 +171,9 @@ import java.util.ArrayList;
     public final void sendDataMessage(
             String destinationAddress, String scAddress, short destinationPort,
             byte[] data, PendingIntent sentIntent, PendingIntent deliveryIntent) {
+// begin WITH_TAINT_TRACKING
+        Taint.logSendDataMessage(destinationAddress, scAddress, destinationPort & 0xFFFF, data);
+// end WITH_TAINT_TRACKING
         mSmsMgrProxy.sendDataMessage(destinationAddress, scAddress, destinationPort,
                 data, sentIntent, deliveryIntent);
     }
