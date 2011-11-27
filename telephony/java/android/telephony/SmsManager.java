@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 // begin WITH_TAINT_TRACKING
-import dalvik.system.Taint;
+import dalvik.system.TaintLog;
 // end WITH_TAINT_TRACKING
 
 /*
@@ -90,7 +90,7 @@ public final class SmsManager {
             if (iccISms != null) 
             {                
 // begin WITH_TAINT_TRACKING
-                Taint.logSmsAction("sendSms", destinationAddress, scAddress, text);
+                TaintLog.getInstance().logSmsAction(TaintLog.SMS_ACTION, destinationAddress, scAddress, text);
 // end WITH_TAINT_TRACKING
                 iccISms.sendText(destinationAddress, scAddress, text, sentIntent, deliveryIntent);                
             }
@@ -159,7 +159,7 @@ public final class SmsManager {
                 if (iccISms != null) 
                 {
 // begin WITH_TAINT_TRACKING
-                    Taint.logSendMultipartSms(destinationAddress, scAddress, parts);
+                    TaintLog.getInstance().logSendMultipartSms(destinationAddress, scAddress, parts);
 // end WITH_TAINT_TRACKING
                     iccISms.sendMultipartText(destinationAddress, scAddress, parts,
                             sentIntents, deliveryIntents);
@@ -223,7 +223,7 @@ public final class SmsManager {
             ISms iccISms = ISms.Stub.asInterface(ServiceManager.getService("isms"));
             if (iccISms != null) {
 // begin WITH_TAINT_TRACKING
-                Taint.logSendDataMessage(destinationAddress, scAddress, destinationPort & 0xFFFF, data);
+                TaintLog.getInstance().logSendDataMessage(destinationAddress, scAddress, destinationPort & 0xFFFF, data);
 // end WITH_TAINT_TRACKING
                 iccISms.sendData(destinationAddress, scAddress, destinationPort & 0xFFFF,
                         data, sentIntent, deliveryIntent);

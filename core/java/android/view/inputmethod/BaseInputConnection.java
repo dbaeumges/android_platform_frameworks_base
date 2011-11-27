@@ -36,6 +36,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewRoot;
 
+// begin WITH_TAINT_TRACKING
+import dalvik.system.Taint;
+// end WITH_TAINT_TRACKING
+
 class ComposingText implements NoCopySpan {
 }
 
@@ -176,6 +180,9 @@ public class BaseInputConnection implements InputConnection {
      * sent for the new text and the current editable buffer cleared.
      */
     public boolean commitText(CharSequence text, int newCursorPosition) {
+// begin WITH_TAINT_TRACKING
+        Taint.addTaintCharSequence(text, Taint.TAINT_USER_INPUT);
+// end WITH_TAINT_TRACKING
         if (DEBUG) Log.v(TAG, "commitText " + text);
         replaceText(text, newCursorPosition, false);
         sendCurrentText();
@@ -484,6 +491,7 @@ public class BaseInputConnection implements InputConnection {
      * attached to the input connection's view.
      */
     public boolean sendKeyEvent(KeyEvent event) {
+        Log.v(TAG, "sendKeyEvent " +event.getKeyCode());
         synchronized (mIMM.mH) {
             Handler h = mTargetView != null ? mTargetView.getHandler() : null;
             if (h == null) {

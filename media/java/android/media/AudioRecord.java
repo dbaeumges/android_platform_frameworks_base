@@ -31,6 +31,7 @@ import android.util.Log;
 
 // begin WITH_TAINT_TRACKING
 import dalvik.system.Taint;
+import dalvik.system.TaintLog;
 // end WITH_TAINT_TRACKING
 
 /**
@@ -612,7 +613,7 @@ public class AudioRecord
         }
 
     	// begin WITH_TAINT_TRACKING
-    	Taint.log("AudioRecord.read(ByteBuffer): cannot taint ByteBuffers!");
+    	TaintLog.getInstance().logError("AudioRecord.read(ByteBuffer): cannot taint ByteBuffers!");
     	// end WITH_TAINT_TRACKING  
         return native_read_in_direct_buffer(audioBuffer, sizeInBytes);
     }
