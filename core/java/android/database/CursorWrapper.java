@@ -97,7 +97,7 @@ public class CursorWrapper implements Cursor {
         return mCursor.moveToFirst();
     }
 
-    public int getColumnCount() {
+    public int getColumnCount() {        
         return mCursor.getColumnCount();
     }
 
@@ -119,7 +119,14 @@ public class CursorWrapper implements Cursor {
     }
 
     public double getDouble(int columnIndex) {
-        return mCursor.getDouble(columnIndex);
+        double aRetVal = mCursor.getDouble(columnIndex);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            aRetVal = Taint.addTaintDouble(aRetVal, taint_);
+        }
+        // end WITH_TAINT_TRACKING
+        return aRetVal;
     }
 
     public Bundle getExtras() {
@@ -127,39 +134,79 @@ public class CursorWrapper implements Cursor {
     }
 
     public float getFloat(int columnIndex) {
-        return mCursor.getFloat(columnIndex);
+        float aRetVal = mCursor.getFloat(columnIndex);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            aRetVal = Taint.addTaintFloat(aRetVal, taint_);
+        }
+        // end WITH_TAINT_TRACKING
+        return aRetVal;
     }
 
     public int getInt(int columnIndex) {
-        return mCursor.getInt(columnIndex);
+        int aRetVal = mCursor.getInt(columnIndex);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            aRetVal = Taint.addTaintInt(aRetVal, taint_);
+        }
+        // end WITH_TAINT_TRACKING
+        return aRetVal;
     }
 
     public long getLong(int columnIndex) {
-        return mCursor.getLong(columnIndex);
+        long aRetVal = mCursor.getLong(columnIndex);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            aRetVal = Taint.addTaintLong(aRetVal, taint_);
+        }
+        // end WITH_TAINT_TRACKING
+        return aRetVal;
     }
 
     public short getShort(int columnIndex) {
-        return mCursor.getShort(columnIndex);
+        short aRetVal = mCursor.getShort(columnIndex);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            aRetVal = Taint.addTaintShort(aRetVal, taint_);
+        }
+        // end WITH_TAINT_TRACKING
+        return aRetVal;
     }
 
     public String getString(int columnIndex) {
-        String retString = mCursor.getString(columnIndex);
-
+        String aRetVal = mCursor.getString(columnIndex);
 		// begin WITH_TAINT_TRACKING
         if(taint_ != Taint.TAINT_CLEAR)
         {
-            Taint.addTaintString(retString, taint_);
+            Taint.addTaintString(aRetVal, taint_);
         }
 		// end WITH_TAINT_TRACKING
-		return retString;
+		return aRetVal;
     }
     
-    public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer) {
+    public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer) {        
         mCursor.copyStringToBuffer(columnIndex, buffer);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            Taint.addTaintCharArray(buffer.data, taint_);
+        }
+        // end WITH_TAINT_TRACKING
     }
 
     public byte[] getBlob(int columnIndex) {
-        return mCursor.getBlob(columnIndex);
+        byte[] aRetVal = mCursor.getBlob(columnIndex);
+        // begin WITH_TAINT_TRACKING
+        if (taint_ != Taint.TAINT_CLEAR)
+        {
+            Taint.addTaintByteArray(aRetVal, taint_);
+        }
+        // end WITH_TAINT_TRACKING
+        return aRetVal;
     }
     
     public boolean getWantsAllOnMoveCalls() {

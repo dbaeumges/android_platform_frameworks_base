@@ -491,7 +491,6 @@ public class BaseInputConnection implements InputConnection {
      * attached to the input connection's view.
      */
     public boolean sendKeyEvent(KeyEvent event) {
-        Log.v(TAG, "sendKeyEvent " +event.getKeyCode());
         synchronized (mIMM.mH) {
             Handler h = mTargetView != null ? mTargetView.getHandler() : null;
             if (h == null) {

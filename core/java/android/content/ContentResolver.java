@@ -268,21 +268,33 @@ public abstract class ContentResolver {
                 return null;
             }
 
-	    // begin WITH_TAINT_TRACKING
-	    int taint = Taint.TAINT_CLEAR;
-	    if(uri.toString().indexOf("com.android.contacts") != -1) {
-	        taint = Taint.TAINT_CONTACTS;
-	    }
-	    else if(uri.toString().indexOf("browser/bookmarks") != -1) {
-		taint = Taint.TAINT_HISTORY;
-	    }
-	    else if(uri.toString().indexOf("content://sms") != -1) {
-	        taint = Taint.TAINT_SMS;
-	    }
-	    else if(uri.toString().indexOf("content://mms") != -1) {
-	        taint = Taint.TAINT_SMS;
-	    }
-	    // end WITH_TAINT_TRACKING
+            // begin WITH_TAINT_TRACKING
+            int taint = Taint.TAINT_CLEAR;
+            if (uri.toString().indexOf("com.android.contacts") != -1) 
+            {
+                taint = Taint.TAINT_CONTACTS;
+            }
+            else if (uri.toString().indexOf("content://contacts") != -1 )
+            {
+                taint = Taint.TAINT_CONTACTS;
+            }
+            else if (uri.toString().indexOf("browser/bookmarks") != -1) 
+            {
+                taint = Taint.TAINT_HISTORY;
+            }
+            else if (uri.toString().indexOf("content://sms") != -1) 
+            {
+                taint = Taint.TAINT_SMS;
+            }
+            else if (uri.toString().indexOf("content://mms") != -1)
+            {
+                taint = Taint.TAINT_SMS;
+            }
+            else if (uri.toString().indexOf("content://media") != -1)
+            {
+                taint = Taint.TAINT_MEDIA;
+            }
+            // end WITH_TAINT_TRACKING
 
             // force query execution
             qCursor.getCount();
